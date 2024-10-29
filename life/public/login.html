@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login y Registro</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            flex-direction: row;
+            transition: transform 0.5s ease;
+            padding: 20px;
+            box-sizing: border-box;
+            margin: 0 10px;
+        }
+        .section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .section h2 {
+            margin: 0 0 20px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+        }
+        .active {
+            opacity: 1;
+            transform: translateX(0);
+            background: linear-gradient(135deg, #ffffff, #e3f2fd);
+            z-index: 2;
+        }
+        .inactive {
+            opacity: 0;
+            transform: translateX(-20px);
+            background: #ffffff;
+            z-index: 1;
+        }
+        .section label {
+            display: block;
+            margin: 8px 0 4px;
+            color: #555;
+            font-weight: 500;
+        }
+        .section input {
+            width: 100%;
+            max-width: 350px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            font-size: 14px;
+            line-height: 1.5;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section input:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+        .form-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            width: 100%;
+            justify-content: center;
+        }
+        .form-grid div {
+            flex: 1 1 calc(50% - 16px);
+            max-width: 330px;
+            box-sizing: border-box;
+        }
+        .section button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .section a {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            transition: color 0.3s ease;
+        }
+        .section a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sección de Login -->
+        <div id="login-section" class="section active">
+            <h2>Login</h2>
+            <form id="login-form" action="/login" method="post">
+                <label for="login-username">Usuario:</label>
+                <input type="text" id="login-username" name="username" required>
+                <label for="login-password">Contraseña:</label>
+                <input type="password" id="login-password" name="password" required>
+                <button type="submit">Entrar</button>
+                <a href="#" id="forgot-password-link">Olvidé la contraseña</a>
+            </form>
+            <button id="switch-to-register">Registrar</button>
+        </div>
+
+        <!-- Sección de Registro -->
+        <div id="register-section" class="section inactive">
+            <h2>Registro</h2>
+            <form id="register-form" action="/register" method="post">
+                <div class="form-grid">
+                    <div>
+                        <label for="register-name">Nombre:</label>
+                        <input type="text" id="register-name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="register-lastname">Apellido:</label>
+                        <input type="text" id="register-lastname" name="lastname" required>
+                    </div>
+                    <div>
+                        <label for="register-id">Cédula:</label>
+                        <input type="text" id="register-id" name="cedula" required>
+                    </div>
+                    <div>
+                        <label for="register-username">Usuario:</label>
+                        <input type="text" id="register-username" name="username" required>
+                    </div>
+                    <div>
+                        <label for="register-password">Contraseña:</label>
+                        <input type="password" id="register-password" name="password" required>
+                    </div>
+                    <div>
+                        <label for="register-confirm-password">Confirmar Contraseña:</label>
+                        <input type="password" id="register-confirm-password" name="confirm-password" required>
+                    </div>
+                    <div>
+                        <label for="admin-key">Clave de Administrador:</label>
+                        <input type="password" id="admin-key" name="admin-key" required>
+                    </div>
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
+            <button id="switch-to-login">Volver al Login</button>
+        </div>
+    </div>
+
+    <script>
+        // Manejo del enlace de "Olvidé la contraseña"
+        document.getElementById('forgot-password-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            alert('Se enviará un mensaje al correo asociado con el usuario.');
+        });
+
+        // Cambiar a la sección de registro
+        document.getElementById('switch-to-register').addEventListener('click', function() {
+            document.getElementById('login-section').classList.remove('active');
+            document.getElementById('login-section').classList.add('inactive');
+            document.getElementById('register-section').classList.remove('inactive');
+            document.getElementById('register-section').classList.add('active');
+        });
+
+        // Cambiar a la sección de login
+        document.getElementById('switch-to-login').addEventListener('click', function() {
+            document.getElementById('register-section').classList.remove('active');
+            document.getElementById('register-section').classList.add('inactive');
+            document.getElementById('login-section').classList.remove('inactive');
+            document.getElementById('login-section').classList.add('active');
+        });
+
+        // Manejo del formulario de login
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Login exitoso.');
+                localStorage.setItem('token', result.token);
+                window.location.href = 'inicio.html';
+            } else {
+                alert(result.message);
+            }
+        });
+
+        // Manejo del formulario de registro
+        document.getElementById('register-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const lastname = document.getElementById('register-lastname').value;
+            const id_number = document.getElementById('register-id-number').value;
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const adminKey = document.getElementById('admin-key').value;
+
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden.');
+                return;
+            }
+
+            if (adminKey !== 'Emma1722') {
+                alert('Clave de administrador incorrecta.');
+                return;
+            }
+
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, lastname, cedula, username, password, adminKey })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Registro exitoso.');
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+</body>
+</html>

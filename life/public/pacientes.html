@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        #pacientes-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background-color: #ffffff;
+            border-right: 2px solid #e0e0e0;
+            width: 300px;
+            overflow-y: auto;
+            height: 100vh;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        #pacientes-list li {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #pacientes-list li:hover {
+            background-color: #e0e0e0;
+            cursor: pointer;
+            transform: translateX(5px);
+        }
+        #pacientes-list li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .container {
+            margin-left: 300px;
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - 300px); /* Ajusta el ancho para compensar el listado fijo */
+            height: 100%;
+            background-color: #f4f4f4;
+        }
+        #paciente-info {
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+        #paciente-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        #paciente-details p {
+            margin: 0;
+            flex: 1 1 200px; /* Ajustado para un tamaño de flex más pequeño */
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        #content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 80px); /* Ajustado para el espacio ocupado por paciente-info */
+        }
+        #menu {
+            display: flex;
+            justify-content: space-between;
+            background-color: #ffffff;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 10px 20px;
+        }
+        #menu button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #menu button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        #historial-notas, #form-container {
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-top: 2px solid #e0e0e0;
+            overflow-y: auto;
+        }
+        #historial-notas {
+            display: none; /* Ocultado por defecto, se mostrará al seleccionar en el menú */
+        }
+        #form-container {
+            display: none; /* Ocultado por defecto, se mostrará al seleccionar en el menú */
+            flex: 1; /* Ocupar todo el espacio disponible en el contenedor */
+            padding: 30px;
+            background-color: #ffffff;
+            border-top: 2px solid #e0e0e0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        #historial-notas ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        #historial-notas li {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            background-color: #fafafa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        #historial-notas li:last-child {
+            border-bottom: none;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+        .form-container input, .form-container textarea {
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .form-container input {
+            height: 45px; /* Altura ajustada para inputs */
+        }
+        .form-container textarea {
+            height: 200px; /* Altura ajustada para textarea */
+            resize: vertical; /* Permite cambiar el tamaño verticalmente */
+        }
+        .form-container button {
+            align-self: flex-start;
+            padding: 12px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="pacientes-list"></div>
+
+    <div class="container">
+        <div id="paciente-info">
+            <h2>Detalles del Paciente</h2>
+            <div id="paciente-details"></div>
+        </div>
+
+        <div id="content">
+            <div id="menu">
+                <button id="show-historial-notas">Historial de Notas</button>
+                <button id="show-agregar-nota">Agregar Nota</button>
+            </div>
+            <div id="historial-notas">
+                <h2>Historial de Notas</h2>
+                <ul id="historial-notas-list"></ul>
+            </div>
+            <div id="form-container">
+                <h2>Agregar Nota</h2>
+                <div class="form-container">
+                    <form id="add-nota-form">
+                        <label for="saturacion">Saturación:</label>
+                        <input type="text" id="saturacion" name="saturacion">
+                        <label for="frecuencia_cardiaca">Frecuencia Cardíaca:</label>
+                        <input type="text" id="frecuencia_cardiaca" name="frecuencia_cardiaca">
+                        <label for="tension_arterial">Tensión Arterial:</label>
+                        <input type="text" id="tension_arterial" name="tension_arterial">
+                        <label for="frecuencia_respiratoria">Frecuencia Respiratoria:</label>
+                        <input type="text" id="frecuencia_respiratoria" name="frecuencia_respiratoria">
+                        <label for="nota">Nota:</label>
+                        <textarea id="nota" name="nota"></textarea>
+                        <button type="submit">Agregar Nota</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="pacientes.js"></script>
+    <script>
+        document.getElementById('show-historial-notas').addEventListener('click', function() {
+            document.getElementById('historial-notas').style.display = 'block';
+            document.getElementById('form-container').style.display = 'none';
+        });
+
+        document.getElementById('show-agregar-nota').addEventListener('click', function() {
+            document.getElementById('historial-notas').style.display = 'none';
+            document.getElementById('form-container').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
